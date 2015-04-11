@@ -1,1 +1,4 @@
 rootProject.name = 'big-data-generator'
+
+include 'yarn'
+project(':yarn').name = 'big-data-generator-yarn'

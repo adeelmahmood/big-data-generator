@@ -1,0 +1,18 @@
+jar { baseName = 'big-data-generator-yarn' }
+
+dependencies {
+
+	compile "commons-io:commons-io:2.4"
+	compile "commons-cli:commons-cli:1.2"
+
+	compile "org.apache.hadoop:hadoop-common-local:${hadoopVersion}"
+	compile "org.apache.hadoop:hadoop-yarn-client-local:${hadoopVersion}"
+	compile "org.apache.hadoop:hadoop-yarn-common-local:${hadoopVersion}"
+	compile "org.apache.hadoop:hadoop-yarn-api-local:${hadoopVersion}"
+	compile "com.google.protobuf:protobuf-java:2.6.1"
+}
+
+// http://slf4j.org/faq.html#excludingJCL
+repositories {
+	maven { url = "http://version99.qos.ch" }
+}

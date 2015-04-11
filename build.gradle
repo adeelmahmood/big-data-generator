@@ -1,0 +1,63 @@
+buildscript {
+	ext { springBootVersion = '1.2.3.RELEASE' }
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {  classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") }
+}
+
+allprojects {
+	group = "com.att.datalake.big-data-generator"
+}
+
+ext {
+	javaprojects = subprojects.findAll { project -> project.name != 'docs' }
+}
+
+configure(javaprojects) {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'spring-boot'
+
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven { url 'http://maven.springframework.org/milestone/' }
+	}
+
+	bootRepackage { enabled = false }
+	
+	configurations.all {
+		resolutionStrategy.cacheChangingModulesFor 60, 'minutes'
+		//		exclude group: 'ch.qos.logback', module: 'logback-classic'
+	}
+
+	dependencies {
+		compile("org.springframework.boot:spring-boot-starter")
+		testCompile("org.springframework.boot:spring-boot-starter-test")
+	}
+
+	if (JavaVersion.current().isJava8Compatible()) {
+		allprojects {
+			tasks.withType(Javadoc) {
+				options.addStringOption('Xdoclint:none', '-quiet')
+			}
+		}
+	}
+
+	eclipse {
+		classpath {
+			containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+			containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+		}
+	}
+}
+
+println "Using Spring Boot version: [$springBootVersion]"
+println "Using Java version: [" + System.getProperty("java.version") + "]"
+
+task wrapper(type: Wrapper) { gradleVersion = '1.12' }
