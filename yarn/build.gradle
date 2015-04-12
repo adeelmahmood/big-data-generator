@@ -2,6 +2,20 @@ jar { baseName = 'big-data-generator-yarn' }
 
 dependencies {
 
+	compile ("org.springframework.data:spring-data-hadoop:${springHadoopVersion}") {
+		exclude module: "spring-data-hadoop-batch"
+		exclude module: "hadoop-common"
+		exclude module: "hadoop-yarn-common"
+		exclude module: "hadoop-hdfs"
+		exclude module: "hadoop-streaming"
+		exclude module: "hadoop-mapreduce-client-jobclient"
+		exclude module: "hadoop-mapreduce-client-core"
+		exclude module: "spring-data-hadoop-hbase"
+		exclude module: "spring-data-hadoop-hive"
+		exclude module: "spring-data-hadoop-pig"
+		exclude module: "hadoop-distcp"
+	}
+	
 	compile "commons-io:commons-io:2.4"
 	compile "commons-cli:commons-cli:1.2"
 
@@ -15,4 +29,9 @@ dependencies {
 // http://slf4j.org/faq.html#excludingJCL
 repositories {
 	maven { url = "http://version99.qos.ch" }
+}
+
+bootRepackage {
+	mainClass = 'com.att.datalake.bdg.yarn.Application'
+	enabled = true
 }
