@@ -42,7 +42,7 @@ public class ApplicationMaster extends AbstractApplicationMaster {
 	private ByteBuffer allTokens;
 	private UserGroupInformation ugi;
 
-	@Value("${yarn.AcontainerJar}")
+	@Value("${yarn.containerJar}")
 	private String containerJar;
 
 	@Autowired

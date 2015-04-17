@@ -9,5 +9,5 @@ yarn:
   debug: false
  am:
   name: bdg
- containerJar: abc.jar
+ containerJar: /Users/adeelq/Documents/workspace-sts-3.6.3.SR1/yarnmailer/spring.jar
   

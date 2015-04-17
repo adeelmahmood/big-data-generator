@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.att.datalake.bdg.yarn.am.ApplicationMaster;
 import com.att.datalake.bdg.yarn.client.ApplicationClient;
 
 @Configuration
@@ -29,19 +30,22 @@ public class Application implements CommandLineRunner {
 	public static String CURRENT_JAR_PATH;
 
 	@Bean
-	public org.apache.hadoop.conf.Configuration yarnConfiguration() {
+	public org.apache.hadoop.conf.Configuration conf() throws IOException {
+		YarnConfiguration conf = new YarnConfiguration();
+		log.info("conf " + conf.toString());
+		log.info("fs " + FileSystem.get(conf));
 		return new YarnConfiguration();
 	}
 
 	@Bean
-	public FileSystem fileSystem() throws IOException {
-		return FileSystem.get(yarnConfiguration());
+	public FileSystem fs() throws IOException {
+		return FileSystem.get(conf());
 	}
 
 	@Bean
-	public YarnClient yarnClient() {
+	public YarnClient yarnClient() throws IOException {
 		YarnClient yarnClient = YarnClient.createYarnClient();
-		yarnClient.init(yarnConfiguration());
+		yarnClient.init(conf());
 		return yarnClient;
 	}
 
@@ -51,6 +55,8 @@ public class Application implements CommandLineRunner {
 
 	@Autowired
 	private ApplicationClient client;
+	@Autowired
+	private ApplicationMaster am;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -63,8 +69,9 @@ public class Application implements CommandLineRunner {
 
 		if (args[0].equals("client")) {
 			client.start();
+		} else if (args[0].equals("application-master")) {
+			am.start();
 		}
-
 	}
 
 	private void setCurrentJarPath() {

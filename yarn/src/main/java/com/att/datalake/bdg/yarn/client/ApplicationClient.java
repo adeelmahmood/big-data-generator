@@ -22,10 +22,11 @@ import org.apache.hadoop.yarn.util.Records;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.att.datalake.bdg.yarn.Application;
-import com.att.datalake.bdg.yarn.utils.ResourceHandler;
+import com.att.datalake.bdg.yarn.support.ResourceHandler;
 import com.att.datalake.bdg.yarn.utils.YarnUtils;
 
 @Component
@@ -37,6 +38,9 @@ public class ApplicationClient extends AbstractYarnClient {
 	private final ClientProperties clientProperties;
 	private final YarnClientOperations clientOperations;
 	private final ResourceHandler resourceHandler;
+
+	@Value("${yarn.containerJar}")
+	private String containerJar;
 
 	@Autowired
 	public ApplicationClient(ClientProperties clientProperties, YarnClient yarnClient,
@@ -94,8 +98,7 @@ public class ApplicationClient extends AbstractYarnClient {
 				FilenameUtils.getName(Application.CURRENT_JAR_PATH), clientProperties.getName(), appId.toString(),
 				localResources);
 		// add container jar to resources
-		resourceHandler.addLocalResource(clientProperties.getContainerJar(),
-				FilenameUtils.getName(clientProperties.getContainerJar()), clientProperties.getName(),
+		resourceHandler.addLocalResource(containerJar, FilenameUtils.getName(containerJar), clientProperties.getName(),
 				appId.toString(), localResources);
 
 		// specify local resource on container
@@ -136,7 +139,7 @@ public class ApplicationClient extends AbstractYarnClient {
 		resource.setMemory(clientProperties.getMasterMemory());
 		resource.setVirtualCores(clientProperties.getMasterVirtualCores());
 		appContext.setResource(resource);
-		log.info("container capability set as " + clientProperties.getMasterMemory() + "m	 memory and and "
+		log.info("container capability set as " + clientProperties.getMasterMemory() + "m memory and "
 				+ clientProperties.getMasterVirtualCores() + " virtual cores");
 
 		// setup security tokens

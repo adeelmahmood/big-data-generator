@@ -1,4 +1,4 @@
-package com.att.datalake.bdg.yarn.utils;
+package com.att.datalake.bdg.yarn.support;
 
 import java.io.IOException;
 import java.util.Map;
