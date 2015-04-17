@@ -1,8 +1,13 @@
-yarn.client:
- name: bdg
- priority: 0
- queue: default
- masterMemory: 128
- masterVirtualCores: 1
- keepContainerAcrossRestart: false
- debug: false
+yarn:
+ client:
+  name: bdg
+  priority: 0
+  queue: default
+  masterMemory: 128
+  masterVirtualCores: 1
+  keepContainerAcrossRestart: false
+  debug: false
+ am:
+  name: bdg
+ containerJar: abc.jar
+  

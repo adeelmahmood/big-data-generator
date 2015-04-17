@@ -14,6 +14,7 @@ public class ClientProperties {
 	private int masterVirtualCores;
 	private boolean keepContainerAcrossRestart;
 	private boolean debug;
+	private String containerJar;
 
 	public int getMasterMemory() {
 		return masterMemory;
@@ -69,5 +70,13 @@ public class ClientProperties {
 
 	public void setKeepContainerAcrossRestart(boolean keepContainerAcrossRestart) {
 		this.keepContainerAcrossRestart = keepContainerAcrossRestart;
+	}
+
+	public String getContainerJar() {
+		return containerJar;
+	}
+
+	public void setContainerJar(String containerJar) {
+		this.containerJar = containerJar;
 	}
 }

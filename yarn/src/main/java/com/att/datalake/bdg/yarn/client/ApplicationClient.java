@@ -48,7 +48,7 @@ public class ApplicationClient extends AbstractYarnClient {
 	}
 
 	public void start() throws YarnException, IOException {
-		log.info("starting yarn client");
+		log.info("yarn client starting");
 		yarnClient.start();
 
 		if (clientProperties.isDebug()) {
@@ -89,10 +89,14 @@ public class ApplicationClient extends AbstractYarnClient {
 		// set local resource for application master
 		Map<String, LocalResource> localResources = new HashMap<String, LocalResource>();
 
-		// add application master jar to resource
+		// add application master jar to resources
 		resourceHandler.addLocalResource(Application.CURRENT_JAR_PATH,
 				FilenameUtils.getName(Application.CURRENT_JAR_PATH), clientProperties.getName(), appId.toString(),
 				localResources);
+		// add container jar to resources
+		resourceHandler.addLocalResource(clientProperties.getContainerJar(),
+				FilenameUtils.getName(clientProperties.getContainerJar()), clientProperties.getName(),
+				appId.toString(), localResources);
 
 		// specify local resource on container
 		appContainer.setLocalResources(localResources);
